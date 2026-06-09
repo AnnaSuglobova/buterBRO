@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>БутерБро - твой идеальный кусь</title>
+<meta name="description" content="Авторские бутерброды на тартине, чиабатте и бриоши. Меню и предзаказ онлайн в баре-бутербродной БутерБро." />
+<meta property="og:title" content="БутерБро - твой идеальный кусь" />
+<meta property="og:description" content="Авторские бутерброды на крафтовом хлебе. Меню и предзаказ." />
+<meta property="og:image" content="assets/hero-sandwich.jpg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* --- STYLES --- */
+:root {
+  --bg: #F9F6F0;
+  --fg: #1A1614;
+  --muted: #7A716B;
+  --card: #FFFFFF;
+  --border: #ECE6DC;
+  --secondary: #F1ECE2;
+  --primary: #D94838;
+  --primary-fg: #FFFFFF;
+  --olive: #6B8E23;
+  --shadow: 0 4px 16px rgba(26,22,20,.06);
+  --shadow-hover: 0 12px 32px rgba(26,22,20,.14);
+  --gradient-hero: linear-gradient(180deg, rgba(0,0,0,.05) 0%, rgba(0,0,0,.55) 100%);
+  --transition: .3s cubic-bezier(.4,0,.2,1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Montserrat', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Глобальный фикс для скрытых элементов */
+[hidden] { display: none !important; }
+
+/* Отступ при скролле к якорным ссылкам, чтобы шапка не перекрывала контент */
+section[id] { scroll-margin-top: 90px; }
+
+img { display: block; max-width: 100%; }
+button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+a { color: inherit; text-decoration: none; }
+em { font-style: italic; }
+.container { max-width: 1152px; margin: 0 auto; padding: 0 24px; }
+.muted { color: var(--muted); font-size: 14px; }
+
+/* Top Bar */
+.top-bar { background: var(--fg); color: var(--bg); padding: 8px 0; font-size: 13px; font-weight: 500; }
+.top-bar-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.top-bar-left { display: flex; gap: 24px; flex-wrap: wrap; }
+
+/* Header */
+.site-header {
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(249,246,240,.75);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid rgba(236,230,220,.6);
+}
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 24px;
+}
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px; font-weight: 700; letter-spacing: -.02em;
+}
+.logo span { color: var(--primary); }
+.nav { display: none; gap: 28px; font-size: 14px; font-weight: 600; }
+.nav a { color: rgba(26,22,20,.7); transition: color var(--transition); }
+.nav a:hover { color: var(--fg); }
+@media (min-width: 768px) { .nav { display: flex; } }
+.cart-btn {
+  position: relative; width: 44px; height: 44px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 999px; background: var(--fg); color: var(--bg);
+  transition: transform var(--transition);
+}
+.cart-btn:hover { transform: scale(1.05); }
+.cart-count {
+  position: absolute; top: -4px; right: -4px;
+  min-width: 20px; height: 20px; padding: 0 5px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 999px; background: var(--primary); color: var(--primary-fg);
+  font-size: 11px; font-weight: 700;
+}
+
+/* Hero */
+.hero { position: relative; height: 88vh; min-height: 560px; overflow: hidden; }
+.hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero-overlay { position: absolute; inset: 0; background: var(--gradient-hero); }
+.hero-content {
+  position: relative; z-index: 2;
+  height: 100%; display: flex; flex-direction: column; justify-content: flex-end;
+  padding-bottom: 80px; color: var(--bg);
+}
+.eyebrow {
+  font-size: 13px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: .25em;
+  color: rgba(249,246,240,.8); margin-bottom: 16px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(48px, 9vw, 112px);
+  font-weight: 700; line-height: 1.05; max-width: 800px;
+}
+.hero h1 em { color: var(--primary); font-style: italic; }
+.hero-lead {
+  margin-top: 24px; max-width: 480px; font-size: 18px;
+  color: rgba(249,246,240,.85);
+}
+.hero-actions { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 16px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 16px 32px; border-radius: 999px;
+  font-size: 16px; font-weight: 600;
+  transition: transform var(--transition), background var(--transition);
+}
+.btn-primary { background: var(--primary); color: var(--primary-fg); box-shadow: var(--shadow-hover); }
+.btn-primary:hover { transform: scale(1.03); }
+.btn-ghost {
+  background: rgba(249,246,240,.1); color: var(--bg);
+  border: 1px solid rgba(249,246,240,.4); backdrop-filter: blur(8px);
+}
+.btn-ghost:hover { background: rgba(249,246,240,.2); }
+
+/* Common Section */
+.section-pad { padding: 96px 0; }
+.kicker {
+  font-size: 12px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .3em; color: var(--primary); margin-bottom: 12px;
+}
+.section-head h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 5vw, 48px); font-weight: 700; line-height: 1.1; margin-bottom: 16px;
+}
+
+/* Advantages */
+.advantages-section { padding-top: 96px; }
+.features-grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-top: 48px; }
+.feature-card { background: var(--card); padding: 32px; border-radius: 16px; box-shadow: var(--shadow); }
+.feature-card h3 { font-family: 'Playfair Display', serif; font-size: 20px; margin-bottom: 8px; }
+
+/* Menu */
+.menu-head { display: flex; flex-direction: column; gap: 24px; margin-bottom: 48px; }
+@media (min-width: 768px) { .menu-head { flex-direction: row; align-items: flex-end; justify-content: space-between; } }
+.menu-sub { max-width: 360px; color: var(--muted); }
+
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
+.tab {
+  padding: 10px 20px; border-radius: 999px;
+  font-size: 14px; font-weight: 500;
+  background: var(--secondary); color: rgba(26,22,20,.7);
+  transition: all var(--transition);
+}
+.tab:hover { background: #E8E0D2; color: var(--fg); }
+.tab.active { background: var(--fg); color: var(--bg); box-shadow: var(--shadow); }
+
+.grid { display: grid; gap: 24px; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+
+.card {
+  display: flex; flex-direction: column;
+  background: var(--card); border-radius: 16px; overflow: hidden;
+  box-shadow: var(--shadow); transition: transform var(--transition), box-shadow var(--transition);
+  animation: fadeUp .5s ease both;
+}
+.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+.card-img-btn { position: relative; aspect-ratio: 4/3; overflow: hidden; display: block; width: 100%; }
+.card-img-btn img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--transition); }
+.card:hover .card-img-btn img { transform: scale(1.05); }
+.veg-badge {
+  position: absolute; top: 12px; left: 12px;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px; border-radius: 999px;
+  background: var(--olive); color: #fff;
+  font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em;
+}
+.card-body { display: flex; flex-direction: column; padding: 20px; flex: 1; }
+.card-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; line-height: 1.2; }
+.bread-tag {
+  align-self: flex-start; margin-top: 8px;
+  padding: 4px 10px; border-radius: 999px;
+  background: var(--secondary); color: var(--muted);
+  font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .05em;
+}
+.card-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; }
+.price { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 600; }
+.btn-add {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 16px; border-radius: 999px;
+  background: var(--primary); color: var(--primary-fg);
+  font-size: 14px; font-weight: 600;
+  transition: transform var(--transition);
+}
+.btn-add:hover { transform: scale(1.04); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Delivery */
+.delivery-block {
+  background: var(--card); border-radius: 24px; padding: 48px;
+  box-shadow: var(--shadow); display: grid; gap: 48px; grid-template-columns: 1fr;
+}
+@media (min-width: 768px) { .delivery-block { grid-template-columns: 1fr 1fr; align-items: center; } }
+.delivery-list { list-style: none; display: flex; flex-direction: column; gap: 20px; margin-top: 24px; }
+.delivery-list li { display: flex; flex-direction: column; gap: 4px; }
+.delivery-map {
+  background: var(--secondary); border-radius: 16px; min-height: 300px; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted); text-align: center; padding: 24px;
+}
+
+/* Footer */
+.site-footer { border-top: 1px solid var(--border); background: var(--card); }
+.footer-inner { display: flex; flex-direction: column; gap: 24px; padding: 48px 24px; }
+@media (min-width: 768px) { .footer-inner { flex-direction: row; align-items: center; justify-content: space-between; } }
+
+/* Modal & Cart */
+.backdrop { position: fixed; inset: 0; z-index: 49; background: rgba(26,22,20,.4); backdrop-filter: blur(4px); animation: fade .2s ease; }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+.modal { position: fixed; inset: 0; z-index: 50; display: flex; align-items: flex-end; justify-content: center; padding: 0; }
+@media (min-width: 768px) { .modal { align-items: center; padding: 24px; } }
+.modal-content {
+  position: relative; width: 100%; max-width: 640px; background: var(--card);
+  border-radius: 24px 24px 0 0; overflow: hidden; box-shadow: var(--shadow-hover);
+  animation: fadeUp .3s ease; display: flex; flex-direction: column; max-height: 92vh;
+}
+@media (min-width: 768px) { .modal-content { border-radius: 24px; } }
+.modal-close {
+  position: absolute; top: 16px; right: 16px; z-index: 2; width: 40px; height: 40px;
+  border-radius: 999px; background: rgba(249,246,240,.85); backdrop-filter: blur(8px);
+  display: inline-flex; align-items: center; justify-content: center; transition: background var(--transition);
+}
+.modal-close:hover { background: var(--bg); }
+.modal-img { width: 100%; aspect-ratio: 16/10; object-fit: cover; }
+.modal-body { padding: 24px; overflow-y: auto; }
+@media (min-width: 768px) { .modal-body { padding: 32px; } }
+.modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.modal-head h3 { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; }
+.modal-desc { margin-top: 16px; color: rgba(26,22,20,.8); }
+.kbju {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;
+  background: var(--secondary); border-radius: 12px; padding: 16px; margin-top: 24px; text-align: center;
+}
+.kbju-label { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+.kbju-val { margin-top: 4px; font-weight: 600; font-size: 13px; }
+.addons-title { margin-top: 24px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .15em; color: var(--muted); }
+.addons { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+.addon-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; border-radius: 12px; background: var(--secondary);
+  cursor: pointer; transition: background var(--transition);
+}
+.addon-row:hover { background: #E8E0D2; }
+.addon-row input { margin-right: 12px; accent-color: var(--primary); }
+.addon-left { display: flex; align-items: center; }
+.addon-price { font-weight: 600; }
+.modal-add {
+  margin-top: 24px; width: 100%; padding: 16px; border-radius: 999px;
+  background: var(--primary); color: var(--primary-fg); font-size: 16px;
+  font-weight: 600; transition: transform var(--transition);
+}
+.modal-add:hover { transform: scale(1.02); }
+
+/* Cart sidebar */
+.cart-sidebar {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 50; width: 100%; max-width: 420px;
+  background: var(--card); box-shadow: -8px 0 24px rgba(0,0,0,.1);
+  display: flex; flex-direction: column; animation: slideIn .3s ease;
+}
+@keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+.cart-head { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid var(--border); }
+.cart-head h3 { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; }
+.cart-list { flex: 1; overflow-y: auto; padding: 16px 24px; }
+.cart-empty { text-align: center; color: var(--muted); padding: 48px 0; }
+.cart-item { display: flex; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--border); }
+.cart-item img { width: 64px; height: 64px; border-radius: 12px; object-fit: cover; }
+.cart-item-info { flex: 1; min-width: 0; }
+.cart-item-name { font-weight: 600; font-size: 14px; }
+.cart-item-addons { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.cart-item-foot { margin-top: 8px; display: flex; align-items: center; justify-content: space-between; }
+.qty { display: inline-flex; align-items: center; gap: 4px; }
+.qty button {
+  width: 28px; height: 28px; border-radius: 999px; background: var(--secondary);
+  display: inline-flex; align-items: center; justify-content: center; transition: background var(--transition);
+}
+.qty button:hover { background: #E8E0D2; }
+.qty span { min-width: 24px; text-align: center; font-weight: 600; font-size: 14px; }
+.cart-item-price { font-weight: 600; }
+.cart-foot { padding: 20px 24px; border-top: 1px solid var(--border); }
+.cart-total { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.cart-total span:first-child { color: var(--muted); }
+.cart-total span:last-child { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; }
+.checkout-btn {
+  width: 100%; padding: 16px; border-radius: 999px; background: var(--primary);
+  color: var(--primary-fg); font-size: 16px; font-weight: 600; transition: transform var(--transition);
+}
+.checkout-btn:hover { transform: scale(1.02); }
+.checkout-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+</style>
+</head>
+<body>
+<!-- Top Bar -->
+<div class="top-bar">
+  <div class="container top-bar-inner">
+    <div class="top-bar-left">
+      <span>режим работы: 09:00 - 23:00</span>
+      <span>доставка: от 45 мин</span>
+    </div>
+    <div class="top-bar-right">
+      <span>+7 (999) 123-45-67</span>
+    </div>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="#top" class="logo">Бутер<span>Бро</span></a>
+    <nav class="nav" id="nav">
+      <a href="#menu">Меню</a>
+      <a href="#advantages">О нас</a>
+      <a href="#delivery">Доставка</a>
+    </nav>
+    <button class="cart-btn" id="cartBtn" aria-label="Корзина">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span class="cart-count" id="cartCount" hidden>0</span>
+    </button>
+  </div>
+</header>
+
+<section id="top" class="hero">
+  <img src="assets/hero-sandwich.jpg" alt="Сочный бутерброд" class="hero-img" onerror="this.src='https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=1920&q=80'" />
+  <div class="hero-overlay"></div>
+  <div class="container hero-content">
+    <p class="eyebrow">бар · бутербродная</p>
+    <h1>Твой идеальный <em>кусь</em></h1>
+    <p class="hero-lead">Авторские бутерброды на крафтовом хлебе. Готовим из локальных продуктов, подаём с заботой.</p>
+    <div class="hero-actions">
+      <a href="#menu" class="btn btn-primary">Смотреть меню</a>
+      <button class="btn btn-ghost" id="heroCartBtn">Предзаказ</button>
+    </div>
+  </div>
+</section>
+
+<!-- Advantages -->
+<section id="advantages" class="advantages-section">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">почему мы</p>
+      <h2>Главное - качество</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <h3>ремесленный хлеб</h3>
+        <p class="muted">печем сами на закваске. хрустящая корочка и воздушный мякиш.</p>
+      </div>
+      <div class="feature-card">
+        <h3>локальные продукты</h3>
+        <p class="muted">работаем с фермерами. свежие овощи и качественное мясо каждый день.</p>
+      </div>
+      <div class="feature-card">
+        <h3>надежная упаковка</h3>
+        <p class="muted">бутерброд приедет горячим и не развалится в пути благодаря эко-боксам.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Menu -->
+<section id="menu" class="section-pad">
+  <div class="container">
+    <div class="menu-head">
+      <div class="section-head">
+        <p class="kicker">Меню</p>
+        <h2>Выбирай свой кусь</h2>
+      </div>
+      <p class="menu-sub">Четыре категории, шесть авторских позиций. Свежий хлеб ежедневно, добавки на любой вкус.</p>
+    </div>
+    <div class="tabs" id="tabs"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- Delivery -->
+<section id="delivery" class="section-pad" style="padding-top: 0;">
+  <div class="container">
+    <div class="delivery-block">
+      <div>
+        <h2 style="font-family: 'Playfair Display', serif; font-size: clamp(32px, 5vw, 40px); margin-bottom: 16px;">Условия доставки</h2>
+        <p class="muted">мы стараемся привозить заказы максимально быстро, чтобы хлеб оставался хрустящим.</p>
+        <ul class="delivery-list">
+          <li>
+            <strong>минимальный заказ:</strong>
+            <span class="muted">от 800 ₽ для бесплатной доставки.</span>
+          </li>
+          <li>
+            <strong>время в пути:</strong>
+            <span class="muted">в среднем 45-60 минут по городу.</span>
+          </li>
+          <li>
+            <strong>способы оплаты:</strong>
+            <span class="muted">перевод курьеру или наличными без сдачи.</span>
+          </li>
+        </ul>
+      </div>
+      <div class="delivery-map">
+        [здесь будет яндекс.карта с зонами доставки]
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div>
+      <p class="logo">Бутер<span>Бро</span></p>
+      <p class="muted">Бар-бутербродная · ежедневно 09:00-23:00</p>
+    </div>
+    <div class="muted">ул. Тартинная, 12 · +7 (999) 123-45-67</div>
+  </div>
+</footer>
+
+<div class="modal" id="modal" hidden></div>
+<aside class="cart-sidebar" id="cartSidebar" hidden></aside>
+<div class="backdrop" id="backdrop" hidden></div>
+
+<script>
+// --- JS ---
+const CATEGORIES = [
+  { id: 'morning', label: 'Утренний кусь' },
+  { id: 'hearty',  label: 'Сытный бро' },
+  { id: 'green',   label: 'Зеленый кусь' },
+  { id: 'sweet',   label: 'Сладкий кусь' },
+];
+
+const PRODUCTS = [
+  { id:'p1', name:'Яйцо-авокадо', bread:'Бриошь', price:420, image:'assets/menu-breakfast.jpg', category:'morning',
+    description:'воздушная бриошь, кремовое авокадо, яйцо-пашот, свежий тимьян и хлопья соли.',
+    weight:'260 г', kbju:{k:480,b:18,j:24,u:38},
+    addons:[{name:'Бекон',price:90},{name:'Сыр чеддер',price:70},{name:'Соус сирача',price:30}] },
+  { id:'p2', name:'Утренний бенедикт', bread:'Тартин', price:460, image:'assets/menu-club.jpg', category:'morning',
+    description:'тартин с индейкой, томатом, листом салата и нежным голландезом.',
+    weight:'290 г', kbju:{k:540,b:26,j:28,u:36},
+    addons:[{name:'Доп. индейка',price:120},{name:'Авокадо',price:90}] },
+  { id:'p3', name:'Бро Ростбиф', bread:'Чиабатта', price:590, image:'assets/menu-hearty.jpg', category:'hearty',
+    description:'нежный ростбиф медленного приготовления, карамелизированный лук, плавленый чеддер.',
+    weight:'330 г', kbju:{k:680,b:38,j:32,u:44},
+    addons:[{name:'Двойное мясо',price:180},{name:'Халапеньо',price:40},{name:'Карамелизованный лук',price:60}] },
+  { id:'p4', name:'Лосось-капер', bread:'Ржаной тартин', price:620, image:'assets/menu-salmon.jpg', category:'hearty',
+    description:'слабосоленый лосось, крем-сыр с укропом, каперсы и красный лук на ржаном тартине.',
+    weight:'280 г', kbju:{k:520,b:28,j:26,u:32},
+    addons:[{name:'Доп. лосось',price:220},{name:'Перепелиное яйцо',price:60}] },
+  { id:'p5', name:'Зеленый Бро', bread:'Цельнозерновой тартин', price:440, image:'assets/menu-green.jpg', category:'green', veg:true,
+    description:'хумус, цукини на гриле, ростки, микрогрин и каплей лимонного масла.',
+    weight:'250 г', kbju:{k:380,b:14,j:16,u:42},
+    addons:[{name:'Фета',price:80},{name:'Авокадо',price:90},{name:'Песто',price:50}] },
+  { id:'p6', name:'Сладкий кусь', bread:'Бриошь', price:380, image:'assets/menu-sweet.jpg', category:'sweet', veg:true,
+    description:'тёплая бриошь с шоколадным кремом, бананом, клубникой и сахарной пудрой.',
+    weight:'240 г', kbju:{k:580,b:10,j:22,u:78},
+    addons:[{name:'Шарик ванильного мороженого',price:120},{name:'Карамель',price:50}] },
+];
+
+let activeCat = 'morning';
+let cart = []; // { product, qty, addons:[name], lineId }
+
+const $ = (s) => document.querySelector(s);
+const tabsEl = $('#tabs');
+const gridEl = $('#grid');
+const cartCountEl = $('#cartCount');
+const modalEl = $('#modal');
+const cartSidebarEl = $('#cartSidebar');
+const backdropEl = $('#backdrop');
+
+// Tabs rendering
+function initTabs() {
+  tabsEl.innerHTML = '';
+  CATEGORIES.forEach(c => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'tab' + (activeCat === c.id ? ' active' : '');
+    b.textContent = c.label;
+    b.dataset.id = c.id;
+    b.onclick = () => {
+      if (activeCat === c.id) return;
+      activeCat = c.id;
+      updateTabs();
+      renderGrid();
+    };
+    tabsEl.appendChild(b);
+  });
+}
+
+function updateTabs() {
+  Array.from(tabsEl.children).forEach(b => {
+    if (b.dataset.id === activeCat) {
+      b.classList.add('active');
+    } else {
+      b.classList.remove('active');
+    }
+  });
+}
+
+function renderGrid() {
+  gridEl.innerHTML = '';
+  PRODUCTS.filter(p => p.category === activeCat).forEach((p, idx) => {
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.style.animationDelay = (idx * 60) + 'ms';
+    card.innerHTML = `
+      <button class="card-img-btn" aria-label="Открыть ${p.name}">
+        <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1481070555726-e2fe83477d4c?auto=format&fit=crop&w=600&q=80'"/>
+        ${p.veg ? '<span class="veg-badge">🌿 veg</span>' : ''}
+      </button>
+      <div class="card-body">
+        <h3 class="card-title">${p.name}</h3>
+        <span class="bread-tag">${p.bread}</span>
+        <div class="card-foot">
+          <span class="price">${p.price} ₽</span>
+          <button class="btn-add">+ Добавить</button>
+        </div>
+      </div>`;
+    card.querySelector('.card-img-btn').onclick = () => openProductModal(p);
+    card.querySelector('.btn-add').onclick = () => { addToCart(p, []); flashCart(); };
+    gridEl.appendChild(card);
+  });
+}
+
+function openProductModal(p) {
+  const selected = new Set();
+  modalEl.hidden = false;
+  backdropEl.hidden = false;
+  document.body.style.overflow = 'hidden';
+
+  const render = () => {
+    const addonsTotal = [...selected].reduce((s,n) => s + (p.addons.find(a=>a.name===n)?.price ?? 0), 0);
+    modalEl.innerHTML = `
+      <div class="modal-content">
+        <button class="modal-close" aria-label="Закрыть">✕</button>
+        <img class="modal-img" src="${p.image}" alt="${p.name}" onerror="this.src='https://images.unsplash.com/photo-1481070555726-e2fe83477d4c?auto=format&fit=crop&w=600&q=80'"/>
+        <div class="modal-body">
+          <div class="modal-head">
+            <div>
+              <h3>${p.name}</h3>
+              <span class="bread-tag" style="margin-top:8px;display:inline-block">${p.bread}</span>
+            </div>
+            <span class="price">${p.price} ₽</span>
+          </div>
+          <p class="modal-desc">${p.description}</p>
+          <div class="kbju">
+            <div><div class="kbju-label">Вес</div><div class="kbju-val">${p.weight}</div></div>
+            <div><div class="kbju-label">Ккал</div><div class="kbju-val">${p.kbju.k}</div></div>
+            <div><div class="kbju-label">Б</div><div class="kbju-val">${p.kbju.b}</div></div>
+            <div><div class="kbju-label">Ж</div><div class="kbju-val">${p.kbju.j}</div></div>
+            <div><div class="kbju-label">У</div><div class="kbju-val">${p.kbju.u}</div></div>
+          </div>
+          ${p.addons.length ? `
+            <p class="addons-title">Добавки</p>
+            <div class="addons">
+              ${p.addons.map(a => `
+                <label class="addon-row">
+                  <span class="addon-left"><input type="checkbox" data-name="${a.name}" ${selected.has(a.name)?'checked':''}/>${a.name}</span>
+                  <span class="addon-price">+${a.price} ₽</span>
+                </label>`).join('')}
+            </div>` : ''}
+          <button class="modal-add">Добавить в корзину · ${p.price + addonsTotal} ₽</button>
+        </div>
+      </div>`;
+    modalEl.querySelector('.modal-close').onclick = closeModal;
+    modalEl.querySelectorAll('input[type=checkbox]').forEach(cb => {
+      cb.onchange = () => { cb.checked ? selected.add(cb.dataset.name) : selected.delete(cb.dataset.name); render(); };
+    });
+    modalEl.querySelector('.modal-add').onclick = () => {
+      addToCart(p, [...selected]);
+      closeModal();
+      openCart();
+    };
+  };
+  render();
+}
+
+function closeModal() {
+  modalEl.hidden = true;
+  modalEl.innerHTML = '';
+  if (cartSidebarEl.hidden) {
+    backdropEl.hidden = true;
+    document.body.style.overflow = '';
+  }
+}
+
+function addToCart(p, addons) {
+  const lineId = p.id + '|' + [...addons].sort().join(',');
+  const existing = cart.find(i => i.lineId === lineId);
+  if (existing) existing.qty++;
+  else cart.push({ product: p, qty: 1, addons, lineId });
+  updateCartCount();
+  if (!cartSidebarEl.hidden) renderCart();
+}
+
+function changeQty(lineId, delta) {
+  const i = cart.find(x => x.lineId === lineId);
+  if (!i) return;
+  i.qty += delta;
+  if (i.qty <= 0) cart = cart.filter(x => x.lineId !== lineId);
+  updateCartCount();
+  renderCart();
+}
+
+function updateCartCount() {
+  const n = cart.reduce((s,i) => s + i.qty, 0);
+  cartCountEl.textContent = n;
+  cartCountEl.hidden = n === 0;
+}
+
+function flashCart() {
+  cartCountEl.animate(
+    [{ transform:'scale(1)' },{ transform:'scale(1.4)' },{ transform:'scale(1)' }],
+    { duration: 300 }
+  );
+}
+
+function openCart() {
+  cartSidebarEl.hidden = false;
+  backdropEl.hidden = false;
+  document.body.style.overflow = 'hidden';
+  renderCart();
+}
+
+function closeCart() {
+  cartSidebarEl.hidden = true;
+  cartSidebarEl.innerHTML = '';
+  if (modalEl.hidden) {
+    backdropEl.hidden = true;
+    document.body.style.overflow = '';
+  }
+}
+
+function renderCart() {
+  const total = cart.reduce((sum, i) => {
+    const ad = i.addons.reduce((s,n) => s + (i.product.addons.find(a=>a.name===n)?.price ?? 0), 0);
+    return sum + (i.product.price + ad) * i.qty;
+  }, 0);
+
+  cartSidebarEl.innerHTML = `
+    <div class="cart-head">
+      <h3>Корзина</h3>
+      <button class="modal-close" style="position:static" aria-label="Закрыть">✕</button>
+    </div>
+    <div class="cart-list">
+      ${cart.length === 0 ? '<p class="cart-empty">Корзина пуста. Добавь свой первый кусь!</p>' :
+        cart.map(i => {
+          const ad = i.addons.reduce((s,n) => s + (i.product.addons.find(a=>a.name===n)?.price ?? 0), 0);
+          return `
+            <div class="cart-item">
+              <img src="${i.product.image}" alt="${i.product.name}" onerror="this.src='https://images.unsplash.com/photo-1481070555726-e2fe83477d4c?auto=format&fit=crop&w=600&q=80'"/>
+              <div class="cart-item-info">
+                <div class="cart-item-name">${i.product.name}</div>
+                ${i.addons.length ? `<div class="cart-item-addons">+ ${i.addons.join(', ')}</div>` : ''}
+                <div class="cart-item-foot">
+                  <div class="qty">
+                    <button data-line="${i.lineId}" data-d="-1">-</button>
+                    <span>${i.qty}</span>
+                    <button data-line="${i.lineId}" data-d="1">+</button>
+                  </div>
+                  <span class="cart-item-price">${(i.product.price + ad) * i.qty} ₽</span>
+                </div>
+              </div>
+            </div>`;
+        }).join('')}
+    </div>
+    <div class="cart-foot">
+      <div class="cart-total"><span>Итого</span><span>${total} ₽</span></div>
+      <button class="checkout-btn" ${cart.length===0?'disabled':''}>Оформить предзаказ</button>
+    </div>`;
+  cartSidebarEl.querySelector('.modal-close').onclick = closeCart;
+  cartSidebarEl.querySelectorAll('.qty button').forEach(b => {
+    b.onclick = () => changeQty(b.dataset.line, +b.dataset.d);
+  });
+  const co = cartSidebarEl.querySelector('.checkout-btn');
+  if (co && !co.disabled) co.onclick = () => {
+    const phone = '79991234567';
+    let text = 'привет, БутерБро! хочу заказать идеальный кусь:%0A%0A';
+    cart.forEach((i, idx) => {
+      const ad = i.addons.reduce((s,n) => s + (i.product.addons.find(a=>a.name===n)?.price ?? 0), 0);
+      const itemPrice = i.product.price + ad;
+      let addonText = i.addons.length ? ` (+ ${i.addons.join(', ')})` : '';
+      text += `${idx + 1}. ${i.product.name}${addonText} - ${i.qty} шт. (%D0%BF%D0%BE ${itemPrice} ₽)%0A`;
+    });
+    text += `%0Aитого: ${total} ₽%0A%0Aжду подтверждения!`;
+    window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+    cart = []; updateCartCount(); closeCart();
+  };
+}
+
+$('#cartBtn').onclick = openCart;
+$('#heroCartBtn').onclick = openCart;
+backdropEl.onclick = () => { closeModal(); closeCart(); };
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeModal(); closeCart(); } });
+
+initTabs();
+renderGrid();
+updateCartCount();
+</script>
+</body>
+</html>
